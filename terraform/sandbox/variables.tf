@@ -44,34 +44,34 @@ variable "use_efa" {
 variable "key_name" {
   description = "The name of the key-pair used to access the EC2 instances"
   type        = string
-  nullable = false
+  nullable    = false
 }
 
 variable "allowed_ssh_cidr" {
   description = "Public IP address/range allowed for SSH access"
-  type = string
-  nullable = false
+  type        = string
+  nullable    = false
 }
 
 variable "public_key" {
   description = "Contents of the SSH public key to be used for authentication"
   type        = string
-  sensitive = true
-  nullable = false
+  sensitive   = true
+  nullable    = false
 
   validation {
-    condition     = length(var.public_key) > 8 && substr(var.public_key, 0, 8) == "ssh-rsa "
-    error_message = "The public_key value must start with \"ssh-rsa \"."
+    condition     = length(var.public_key) > 8 && substr(var.public_key, 0, 4) == "ssh-"
+    error_message = "The public_key value must start with \"ssh-"
   }
 }
 
 variable "vpc_id" {
   description = "The ID of an existing VPC within the target region.  Specifying this value will skip creation of a new VPC."
-  type = string
-  default = null
+  type        = string
+  default     = null
 
   validation {
-    condition     = var.vpc_id == null ? true : ( length(var.vpc_id) > 4 && substr(var.vpc_id, 0, 4) == "vpc-" )
+    condition     = var.vpc_id == null ? true : (length(var.vpc_id) > 4 && substr(var.vpc_id, 0, 4) == "vpc-")
     error_message = "The vpc_id value must start with \"vpc-\"."
   }
 
@@ -80,11 +80,11 @@ variable "vpc_id" {
 
 variable "subnet_id" {
   description = "The ID of an existing Subnet within the target VPC to use.  If not provided a Subnet will be created."
-  type = string
-  default = null
+  type        = string
+  default     = null
 
   validation {
-    condition     = var.subnet_id == null ? true : ( length(var.subnet_id) > 7 && substr(var.subnet_id, 0, 7) == "subnet-" )
+    condition     = var.subnet_id == null ? true : (length(var.subnet_id) > 7 && substr(var.subnet_id, 0, 7) == "subnet-")
     error_message = "The subnet_id value must start with \"subnet-\"."
   }
 
@@ -92,8 +92,8 @@ variable "subnet_id" {
 
 variable "subnet_cidr" {
   description = "An explicit CIDR block to use for the created Subnet, if subnet_id is not specified.  Optional."
-  type = string
-  default = null
+  type        = string
+  default     = null
 
   validation {
     condition     = var.subnet_cidr == null ? true : can(cidrhost(var.subnet_cidr, 0))
@@ -104,8 +104,8 @@ variable "subnet_cidr" {
 
 variable "subnet_quartile" {
   description = "If a specific subnet_cidr is not provided, the quartile of VPC address space to use for the created subnet.  Optional."
-  type = number
-  default = 1
+  type        = number
+  default     = 1
 
 }
 
@@ -120,4 +120,25 @@ variable "ami_id" {
   description = "The random ID used for AMI creation"
   type        = string
   default     = "unknown value"
+}
+
+variable "ebs_root_vol_size" {
+  type    = number
+  default = 100
+}
+
+variable "aws_region" {
+  type    = string
+  default = "us-west-1"
+
+}
+
+variable "image_receipe_version" {
+  type    = string
+  default = "1.0.0"
+}
+
+variable "aws_s3_log_bucket" {
+  type    = string
+  default = "malvis-cloud-sandbox-tfstate"
 }

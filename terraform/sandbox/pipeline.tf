@@ -163,14 +163,13 @@ data "aws_kms_key" "image_builder" {
 #  ]
 #}
 resource "aws_imagebuilder_infrastructure_configuration" "headnode" {
-  description           = "Simple infrastructure configuration"
-  instance_profile_name = var.ec2_iam_role_name
-  instance_types        = ["t2.micro"]
-  key_pair              = var.aws_key_pair_name
-  name                  = "amazon-linux-infr"
-  security_group_ids    = [data.aws_security_group.headnode.id]
-
-  subnet_id                     = data.aws_subnet.headnode.id
+  description                   = "Simple infrastructure configuration"
+  instance_profile_name         = aws_iam_instance_profile.cloud_sandbox_iam_instance_profile.name
+  instance_types                = ["t2.micro"]
+  key_pair                      = var.key_name
+  name                          = "amazon-linux-infr"
+  security_group_ids            = [aws_security_group.base_sg.id] #  security_group_ids    = [data.aws_security_group.headnode.id]
+  subnet_id                     = aws_subnet.main[0].id              #  subnet_id                     = data.aws_subnet.headnode.id
   terminate_instance_on_failure = true
 
   logging {
