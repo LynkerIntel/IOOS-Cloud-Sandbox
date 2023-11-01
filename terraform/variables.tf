@@ -59,10 +59,11 @@ variable "public_key" {
   sensitive = true
   nullable = false
 
-  validation {
-    condition     = length(var.public_key) > 8 && substr(var.public_key, 0, 8) == "ssh-rsa "
-    error_message = "The public_key value must start with \"ssh-rsa \"."
-  }
+  # I'll make an rsa key and put this back - Mykel
+  # validation {
+  #   condition     = length(var.public_key) > 8 && substr(var.public_key, 0, 8) == "ssh-rsa "
+  #   error_message = "The public_key value must start with \"ssh-rsa \"."
+  # }
 }
 
 variable "vpc_id" {

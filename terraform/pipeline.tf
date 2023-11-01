@@ -168,9 +168,11 @@ resource "aws_imagebuilder_infrastructure_configuration" "headnode" {
   instance_types        = ["t2.micro"]
   key_pair              = var.aws_key_pair_name
   name                  = "amazon-linux-infr"
-  security_group_ids    = [data.aws_security_group.headnode.id]
+#  security_group_ids    = [data.aws_security_group.headnode.id]
+  security_group_ids    = [aws_security_group.headnode.id]
 
-  subnet_id                     = data.aws_subnet.headnode.id
+#  subnet_id                     = data.aws_subnet.headnode.id
+  subnet_id                     = aws_subnet.headnode.id
   terminate_instance_on_failure = true
 
   logging {

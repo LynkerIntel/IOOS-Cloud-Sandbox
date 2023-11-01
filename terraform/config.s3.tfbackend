@@ -1,2 +1,2 @@
-bucket = "cloud-sandbox-tfstate"
-region = "us-east-1"
+bucket = "malvis-cloud-sandbox-tfstate"
+region = "us-west-1"
