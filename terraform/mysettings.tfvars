@@ -27,14 +27,14 @@ public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIECgrptU05TnzjqBSTH9l9OECqg1tJ
 
 # Example: 
 # vpc_id = "vpc-0381e9f82c9ae68e7"
-vpc_id = "vpc-06a68e7393505792f" 		# the ID of an existing VPC to deploy resources to
+#vpc_id = "vpc-06a68e7393505792f" 		# the ID of an existing VPC to deploy resources to
 
 
 # Example: 
 # subnet_id = "subnet-01ce99f9006e8ed06"
 # subnet_id = "subnet-03b59bee407fcd506"		# the ID of an existing Subnet within the VPC to deploy resources to
 
-subnet_cidr = "10.0.0.0/20"
+#subnet_cidr = "10.0.0.0/20"
 
 #------------------------------------------------------------
 
@@ -44,7 +44,7 @@ subnet_cidr = "10.0.0.0/20"
 #---------------------------------------------------------------
 
 preferred_region = "us-west-1"
-name_tag = "IOOS-Cloud-Sandbox-Terraform-mavis"
+name_tag = "IOOS-Cloud-Sandbox-Terraform-malvis"
 availability_zone = "us-west-1a"
 project_tag = "IOOS-Cloud-Sandbox-malvis"
 instance_type = "t3.medium"
