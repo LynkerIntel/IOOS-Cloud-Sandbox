@@ -23,7 +23,7 @@ resource "aws_instance" "head_node" {
   }
   instance_type = var.instance_type
   cpu_options {
-    core_count       = 2
+    core_count       = 4
     threads_per_core = 2
   }
   root_block_device {

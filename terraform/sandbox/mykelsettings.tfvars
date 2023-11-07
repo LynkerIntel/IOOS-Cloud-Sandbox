@@ -21,7 +21,7 @@ allowed_ssh_cidr = "107.146.152.166/32"
 # key_name = "ioos-sandbox"
 # public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2cQ3fzP1R2uQJcCd3g2ylW5clzyjun6eWz2PZKMwtJh7E28B1jp3F8YTP5XBPg0ouvZO6gkcrbgjhuM0A4NKJM6RylGAOqqPYnIbhd9eI3RKhSQbxsghjf5hwS7tIG1FebO9HuObaM23LDB1/Ra/YMTXB5LHPChlfxrEIlM/7OUfRPNgtudAb/MQZ+YD+6I77QDtTwZwQvebxLK62bP5CrpV4XY5ybWOZ0T3m4pVNfhfl7+QWAvWeStNpH3B3q1ZtPLTuAVvsR4RWk7t75IwpHwiPBcgZn/PTpN45z"
 
-key_name   = "~/.ssh/lynker.pem"                                                                # the filename of the private SSL key 
+key_name   = "malvis@lynker.com-testingonly"                                                                # the filename of the private SSL key 
 public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIECgrptU05TnzjqBSTH9l9OECqg1tJrZOBry9Ma10nAA" # the matching public key (ssh-keygen -y -f your-key-pair.pem) 
 
 # Example: 
@@ -46,7 +46,7 @@ preferred_region  = "us-west-1"
 name_tag          = "IOOS-Cloud-Sandbox-Terraform-malvis"
 availability_zone = "us-west-1a"
 project_tag       = "IOOS-Cloud-Sandbox-malvis"
-instance_type     = "t3.medium"
+# instance_type     = "t3.medium"
 # use_efa = false 
 
 # You can give your AWS resources a unique name to avoid conflicts

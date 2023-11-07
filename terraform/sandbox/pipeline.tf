@@ -165,7 +165,7 @@ data "aws_kms_key" "image_builder" {
 resource "aws_imagebuilder_infrastructure_configuration" "headnode" {
   description                   = "Simple infrastructure configuration"
   instance_profile_name         = aws_iam_instance_profile.cloud_sandbox_iam_instance_profile.name
-  instance_types                = ["t2.micro"]
+  instance_types                = ["t3.micro"]
   key_pair                      = var.key_name
   name                          = "amazon-linux-infr"
   security_group_ids            = [aws_security_group.base_sg.id] #  security_group_ids    = [data.aws_security_group.headnode.id]
