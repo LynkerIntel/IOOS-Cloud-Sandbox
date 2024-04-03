@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "cloudflow"
+version = "1.6.0b"
+repository = "https://github.com/ioos/Cloud-Sandbox"
+homepage = "https://www-sandbox.ioos.us/"
+description = "IOOS Cloud Sandbox cloudflow package. Workflows for cloud based numerical weather prediction."
+authors = [
+    "Patrick Tripp <Patrick.Tripp@tetratech.com>",
+    "Mykel Alvis <mykel.alvis@gmail.com>",
+]
+license = "BSD-3-Clause"
+readme = "README.md"
+package-mode = true
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+cartopy = "^0.22.0"
+plotting = "^0.0.7"
+pyproj = "^3.6.1"
+cmocean = "^3.1.3"
+numpy = "^1.26.4"
+matplotlib = "^3.8.3"
+netcdf4 = "^1.6.5"
+dask = "^2024.3.1"
+distributed = "^2024.3.1"
+pillow = "^10.2.0"
+boto3 = "^1.34"
+xarray = "^2024.2.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+pytest-mock = "^3.12.0"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
