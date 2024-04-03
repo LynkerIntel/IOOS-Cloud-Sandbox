@@ -33,3 +33,5 @@ my.tfvars
 my.plan
 build/
 cloudflow/build/
+cloudflow/dist/
+*.code-workspace
