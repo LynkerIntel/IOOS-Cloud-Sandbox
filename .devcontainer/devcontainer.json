@@ -1,6 +1,6 @@
 {
-"build": {
-	"dockerfile": "Dockerfile"
+  "build": {
+    "dockerfile": "Dockerfile"
 },
 "customizations": {
 	"vscode": {
@@ -19,5 +19,5 @@
 			"redhat.vscode-yaml"
 		]
 	}
-}
+  }
 }
