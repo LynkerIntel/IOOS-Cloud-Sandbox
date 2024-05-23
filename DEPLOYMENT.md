@@ -11,9 +11,12 @@ https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#c
 **AWS credentials with the neccessary permissions:**<br>
 If you are the owner of the AWS account and/or have full admin permissions this shouldn't be a problem. Otherwise, talk to your AWS admin about obtaining the needed permissions.
 
+#TODO What ARE those permissions?
+
 Install the Terraform CLI: <br>
 https://www.terraform.io/downloads.html
 
+#TODO Which version of terraform?
 
 
 #### Clone this repository: <br>
@@ -34,12 +37,12 @@ Terraform tracks internal resource state separately from the project state.  Clo
 
  **This only needs to be performed once per AWS account!**  
 
-Initialize the resources in the remote-state module (S3 bucket) by running the following commands in the Cloud-Sandbox/terraform/remote-state directory.  Running the `terraform apply` command verbatim as follows will use the default bucket configuration as provided by `s3.defaults.tfvars`.  Supply a different `.tfvars` file to override the defaults.  
+Initialize the resources in the remote-state module (S3 bucket) by running the following commands in the Cloud-Sandbox/terraform/remote-state directory.  Running the `terraform apply` command verbatim as follows will use the default bucket configuration as provided by `terraform/config.s3.tfbackend`.  Update or supply a different `.tfvars` file to override the defaults.  
 
 ```
 cd ./Cloud-Sandbox/terraform/remote-state
 terraform init
-terraform apply -var-file=s3.defaults.tfvars
+terraform apply -var-file=../config.s3.tfbackend
 ```
 
 The S3 bucket created in this step will then be used by the main Cloud-Sandbox project as the Terraform backend to store the resource state. If your local folder or state is deleted, the state can be retrieved from S3.
@@ -92,7 +95,7 @@ aws ec2 create-key-pair --key-name <b><i>your-key-pair</i></b> --query "KeyMater
 </pre>
 Optionally specify the AWS region:  
 <pre>
-aws --region="us-east-2" ec2 create-key-pair --key-name <b><i>your-key-pair</i></b> --query "KeyMaterial" --output text > <b><i>your-key-pair.pem</i></b>  
+aws ec2 create-key-pair --key-name <b><i>your-key-pair</i></b> --query "KeyMaterial" --output text > <b><i>your-key-pair.pem</i></b>  
 </pre>
 The private key file must have permissions that allows access only to you, e.g. if on Linux 
 

@@ -57,3 +57,9 @@ subnet_cidr = "10.0.0.0/24"
 
 # nameprefix="ioos-cloud-sandbox"
 #---------------------------------------------------------------
+
+allowed_ssh_cidr="107.146.152.166/32" 
+key_name | "your-key-pair" | The key pair generated in the prior step |
+public_key | "ssh-rsa your_public_key" | The public key obtained in the prior step. Must include "ssh-rsa", assuming it is an rsa key |
+vpc_id | "vpc- your_vpc_id" | The ID of an existing VPC for Terraform to use for deployment |
+subnet_id | "subnet- your_subnet_id" | The ID of an existing Subnet for Terraform to use for deployment |

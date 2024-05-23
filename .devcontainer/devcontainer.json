@@ -1,23 +1,11 @@
 {
   "build": {
     "dockerfile": "Dockerfile"
-},
-"customizations": {
-	"vscode": {
-		"extensions": [
-			"ms-python.python",
-			"4ops.packer",
-			"bungcip.better-toml",
-			"ms-azuretools.vscode-docker",
-			"hashicorp.terraform",
-			"ms-toolsai.jupyter",
-			"ms-toolsai.jupyter-renderers",
-			"redhat.java",
-			"vscjava.vscode-maven",
-			"sourcery.sourcery",
-			"brody715.vscode-cuelang",
-			"redhat.vscode-yaml"
-		]
-	}
-  }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached"
+  ]
+
 }
