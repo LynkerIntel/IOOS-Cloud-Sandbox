@@ -19,6 +19,10 @@ from haikunator import Haikunator
 from cloudflow.cluster import AWSHelper
 from cloudflow.cluster.Cluster import Cluster
 
+import watchtower
+from time import strftime
+
+
 __copyright__ = "Copyright © 2023 RPS Group, Inc. All rights reserved."
 __license__ = "BSD 3-Clause"
 
@@ -27,9 +31,17 @@ debug = False
 log = logging.getLogger('workflow')
 log.setLevel(logging.DEBUG)
 
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group="nos-sandbox", stream_name=f"cluster_runtime_{strftime('%Y-%m-%d')}")
+log.addHandler(console_handler)
+log.addHandler(cw_handler)
+
+
 homedir = Path.home()
 timelog = logging.getLogger('qops_timing')
 timelog.setLevel(logging.DEBUG)
+timelog.addHandler(console_handler)
+timelog.addHandler(cw_handler)
 timelog.propagate = False
 
 fh = logging.FileHandler(f"{homedir}/cluster_runtime.log")
