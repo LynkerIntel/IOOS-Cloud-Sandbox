@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = var.preferred_region
+  region  = var.region
 }
 
 resource "aws_s3_bucket" "terraform_state" {

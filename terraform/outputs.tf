@@ -52,12 +52,12 @@ output "project_tag" {
 
 output "aws_vpc" {
     description = "AWS VPC"
-    value = local.vpc.id
+    value = local.vpc_id
 }
 
 output "aws_subnet" {
     description = "AWS Subnet"
-    value = local.subnet.id
+    value = local.subnet_id
 }
 
 output "aws_placement_group" {

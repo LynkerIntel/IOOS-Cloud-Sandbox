@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.preferred_region
+  region  = var.region
 }
 
 resource "aws_vpc" "cloud_vpc" {
@@ -269,7 +269,7 @@ data "template_file" "init_instance" {
    vars = {
        efs_name = aws_efs_file_system.main_efs.dns_name
        ami_name = "${var.name_tag} AMI"
-       aws_region = var.preferred_region
+       aws_region = var.region
        project = var.project_tag
        instance_id = ""
    }
