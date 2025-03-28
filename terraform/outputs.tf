@@ -51,13 +51,13 @@ output "project_tag" {
 }
 
 output "aws_vpc" {
-    description = "AWS VPC"
-    value = local.vpc.id
+  description = "AWS VPC"
+  value       = local.vpc_id
 }
 
 output "aws_subnet" {
-    description = "AWS Subnet"
-    value = local.subnet.id
+  description = "AWS Subnet"
+  value       = local.subnet_id
 }
 
 output "aws_placement_group" {
@@ -71,6 +71,6 @@ output "aws_placement_group" {
    TODO: Better logic for this, an existing subnet with public visibility might be specified, breaking this.
 */
 output "login_command" {
-   description = "SSH Login"
-   value = one(aws_eip.head_node[*]) != null ? "ssh -i ~/.ssh/${var.key_name}.pem ec2-user@${one(aws_eip.head_node[*]).public_dns}" : "ssh -i ~/.ssh/${var.key_name}.pem ec2-user@${aws_instance.head_node.private_dns}"
+  description = "SSH Login"
+  value       = one(aws_eip.head_node[*]) != null ? "ssh -i ~/.ssh/${var.key_name}.pem ec2-user@${one(aws_eip.head_node[*]).public_dns}" : "ssh -i ~/.ssh/${var.key_name}.pem ec2-user@${aws_instance.head_node.private_dns}"
 }
