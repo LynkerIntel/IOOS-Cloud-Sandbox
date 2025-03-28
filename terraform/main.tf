@@ -1,13 +1,13 @@
 
 
 data "terraform_remote_state" "bootstrap" {
- backend = "s3"
- config = {
-   profile = "lcsb-admin"
-   bucket = "lcsb-terraform-state"
-   key    = "tfstate/lcsb-bootstrap/terraform.tfstate"
-   region = "us-east-2"
- }
+  backend = "s3"
+  config = {
+    profile = "lcsb-admin"
+    bucket  = "lcsb-terraform-state"
+    key     = "tfstate/lcsb-bootstrap/terraform.tfstate"
+    region  = "us-east-2"
+  }
 }
 
 data "aws_availability_zone" "az" {
@@ -19,9 +19,9 @@ data "aws_region" "region" {
 }
 
 locals {
-    vpc_id = data.terraform_remote_state.bootstrap.outputs.env_vpc_id
-    subnet_id = data.terraform_remote_state.bootstrap.outputs.public_subnets[var.availability_zone].id
-    subnet_cidr = data.terraform_remote_state.bootstrap.outputs.public_subnets[var.availability_zone].cidr_block
+  vpc_id      = data.terraform_remote_state.bootstrap.outputs.env_vpc_id
+  subnet_id   = data.terraform_remote_state.bootstrap.outputs.public_subnets[var.availability_zone].id
+  subnet_cidr = data.terraform_remote_state.bootstrap.outputs.public_subnets[var.availability_zone].cidr_block
 }
 
 data "aws_internet_gateway" "gw" {
@@ -30,65 +30,65 @@ data "aws_internet_gateway" "gw" {
     values = [local.vpc_id]
   }
 }
-resource "aws_iam_role" "sandbox_iam_role" {
-  name               = "${var.nameprefix}-${var.availability_zone}_terraform_role"
-  assume_role_policy = jsonencode(
-    {
-      Version = "2012-10-17",
-      Statement = [
-        {
-          Action = "sts:AssumeRole",
-          Sid    = "AttachedIAMRole",
-          Principal = {
-            Service = [
-              "ec2.amazonaws.com"
-            ]
-          },
-          Effect = "Allow"
-        }
-      ]
-    }
-  )
-  tags = {
-    Name    = "${var.name_tag} IAM Role"
-    Project = var.project_tag
-  }
-}
+# resource "aws_iam_role" "sandbox_iam_role" {
+#   name               = "${var.nameprefix}-${var.availability_zone}_terraform_role"
+#   assume_role_policy = jsonencode(
+#     {
+#       Version = "2012-10-17",
+#       Statement = [
+#         {
+#           Action = "sts:AssumeRole",
+#           Sid    = "AttachedIAMRole",
+#           Principal = {
+#             Service = [
+#               "ec2.amazonaws.com"
+#             ]
+#           },
+#           Effect = "Allow"
+#         }
+#       ]
+#     }
+#   )
+#   tags = {
+#     Name    = "${var.name_tag} IAM Role"
+#     Project = var.project_tag
+#   }
+# }
 
-resource "aws_iam_role_policy" "sandbox_iam_role_policy" {
-  name   = "${var.nameprefix}-${var.availability_zone}_terraform_role_policy"
-  policy = jsonencode(
-    {
-      Version = "2012-10-17",
-      Statement = [
-        {
-            "Sid": "ListObjectsInBucket",
-            "Effect": "Allow",
-            "Action": ["s3:ListBucket"],
-            "Resource": ["arn:aws:s3:::ioos-coastalsb-*puts"]
-        },
-        {
-            "Sid": "AllObjectActions",
-            "Effect": "Allow",
-            "Action": "s3:*Object",
-            "Resource": ["arn:aws:s3:::ioos-coastalsb-*puts/*"]
-        }
-      ]
-    }
-  )
-  role   = aws_iam_role.sandbox_iam_role.id
-}
+# resource "aws_iam_role_policy" "sandbox_iam_role_policy" {
+#   name   = "${var.nameprefix}-${var.availability_zone}_terraform_role_policy"
+#   policy = jsonencode(
+#     {
+#       Version = "2012-10-17",
+#       Statement = [
+#         {
+#             "Sid": "ListObjectsInBucket",
+#             "Effect": "Allow",
+#             "Action": ["s3:ListBucket"],
+#             "Resource": ["arn:aws:s3:::lcsb-coastalsb-*puts"]
+#         },
+#         {
+#             "Sid": "AllObjectActions",
+#             "Effect": "Allow",
+#             "Action": "s3:*Object",
+#             "Resource": ["arn:aws:s3:::lcsb-coastalsb-*puts/*"]
+#         }
+#       ]
+#     }
+#   )
+#   role   = aws_iam_role.sandbox_iam_role.id
+# }
 
-resource "aws_iam_role_policy_attachment" "sandbox_role_policy_attach" {
-  count      = length(var.managed_policies)
-  policy_arn = element(var.managed_policies, count.index)
-  role       = aws_iam_role.sandbox_iam_role.name
-}
+# resource "aws_iam_role_policy_attachment" "sandbox_role_policy_attach" {
+#   count      = length(var.managed_policies)
+#   policy_arn = element(var.managed_policies, count.index)
+#   role       = aws_iam_role.sandbox_iam_role.name
+# }
 
-resource "aws_iam_instance_profile" "cloud_sandbox_iam_instance_profile" {
-  name = "${var.nameprefix}-${var.availability_zone}_terraform_instance_profile"
-  role = aws_iam_role.sandbox_iam_role.name
-}
+# resource "aws_iam_instance_profile" "cloud_sandbox_iam_instance_profile" {
+#   name = "${var.nameprefix}-${var.availability_zone}_terraform_instance_profile"
+#   role = aws_iam_role.sandbox_iam_role.name
+# }
 
 resource "aws_placement_group" "cloud_sandbox_placement_group" {
   name     = "${var.nameprefix}-${var.availability_zone}_Terraform_Placement_Group"
@@ -99,23 +99,23 @@ resource "aws_placement_group" "cloud_sandbox_placement_group" {
 }
 
 resource "aws_vpc" "cloud_vpc" {
-   # we only will create this vpc if vpc_id is not passed in as a variable
-   count = local.vpc_id != null ? 0 : 1
-   # This is a large vpc, 256 x 256 IPs available
-   cidr_block = "10.0.0.0/16"
-   enable_dns_support = true
-   enable_dns_hostnames = true
-   tags = {
-      Name = "${var.name_tag} VPC"
-      Project = var.project_tag
-    }
+  # we only will create this vpc if vpc_id is not passed in as a variable
+  count = local.vpc_id != null ? 0 : 1
+  # This is a large vpc, 256 x 256 IPs available
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  tags = {
+    Name    = "${var.name_tag} VPC"
+    Project = var.project_tag
+  }
 }
 
 
 data "aws_vpc" "pre-provisioned" {
   # the pre-provisioned VPC will be returned if vpc_id matches an existing VPC
   count = local.vpc_id != null ? 1 : 0
-  id = local.vpc_id
+  id    = local.vpc_id
 }
 
 data "aws_subnet" "pre-provisioned" {
@@ -134,9 +134,9 @@ resource "aws_efs_file_system" "main_efs" {
 
 
 resource "aws_efs_mount_target" "mount_target_main_efs" {
-    subnet_id = local.subnet_id
-    security_groups = [aws_security_group.efs_sg.id]
-    file_system_id = aws_efs_file_system.main_efs.id
+  subnet_id       = local.subnet_id
+  security_groups = [aws_security_group.efs_sg.id]
+  file_system_id  = aws_efs_file_system.main_efs.id
 }
 
 
@@ -152,11 +152,11 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
 ##################################
 
 data "aws_ami" "rhel_8" {
-  owners = ["309956199498"]
+  owners      = ["309956199498"]
   most_recent = true
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["RHEL-8.7.0_HVM-20230330-x86_64-56-Hourly2-GP2"]
   }
 
@@ -185,11 +185,11 @@ data "aws_ami" "rhel_8" {
 ##################################
 
 data "aws_ami" "centos_stream_9" {
-  owners = ["125523088429"]   # CentOS Official CPE
+  owners      = ["125523088429"] # CentOS Official CPE
   most_recent = true
 
   filter {
-    name = "description"
+    name   = "description"
     values = ["CentOS Stream 9 *"]
   }
 
@@ -213,7 +213,7 @@ data "aws_ami" "centos_stream_9" {
 # # Work around to get a public IP assigned when using EFA
 # Removing this because we will always have a subnet_id
 resource "aws_eip" "head_node" {
-  instance   = aws_instance.head_node.id
+  instance = aws_instance.head_node.id
   tags = {
     Name    = "${var.name_tag} Elastic IP"
     Project = var.project_tag
@@ -231,12 +231,12 @@ resource "aws_instance" "head_node" {
   ami = data.aws_ami.rhel_8.id
 
   metadata_options {
-     http_endpoint = "enabled"
-     http_tokens = "required"
-  }	
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
 
   instance_type = var.instance_type
-  
+
   cpu_options {
     threads_per_core = 2
   }
@@ -247,28 +247,34 @@ resource "aws_instance" "head_node" {
     delete_on_termination = true
     volume_size           = 16
     volume_type           = "gp3"
-    tags                  = {
-        Name    = "${var.name_tag} Head Node"
-        Project = var.project_tag
+    tags = {
+      Name    = "${var.name_tag} Head Node"
+      Project = var.project_tag
     }
 
   }
 
   depends_on = [
-    
+
     data.aws_internet_gateway.gw,
-                aws_efs_file_system.main_efs,
-                aws_efs_mount_target.mount_target_main_efs]
+    aws_efs_file_system.main_efs,
+  aws_efs_mount_target.mount_target_main_efs]
 
   key_name             = var.key_name
-  iam_instance_profile = aws_iam_instance_profile.cloud_sandbox_iam_instance_profile.name
+  iam_instance_profile = data.terraform_remote_state.bootstrap.outputs.head_node_instance_profile
 
-  user_data            = templatefile("init_template.tpl", { efs_name = aws_efs_file_system.main_efs.dns_name, ami_name = "${var.name_tag}-${random_pet.ami_id.id}", aws_region = var.region, project = var.project_tag })
+  user_data = templatefile("init_template.tpl",
+    {
+      efs_name   = aws_efs_file_system.main_efs.dns_name,
+      ami_name   = "${var.name_tag}-${random_pet.ami_id.id}",
+      aws_region = var.region, project = var.project_tag
+    }
+  )
 
   # associate_public_ip_address = true
   network_interface {
     network_interface_id = aws_network_interface.head_node.id
-    device_index = 0
+    device_index         = 0
   }
 
   # This logic isn't perfect since some ena instance types can be in a placement group also
@@ -293,18 +299,18 @@ resource "random_pet" "ami_id" {
 
 # Can only attach efa adaptor to a stopped instance!
 resource "aws_network_interface" "head_node" {
-  
+
   subnet_id   = local.subnet_id
   description = "The network adaptor to attach to the head_node instance"
   security_groups = [aws_security_group.base_sg.id,
-                     aws_security_group.ssh_ingress.id,
-                     aws_security_group.efs_sg.id]
-  
-  interface_type = var.use_efa == true ? "efa" : null 
+    aws_security_group.ssh_ingress.id,
+  aws_security_group.efs_sg.id]
+
+  interface_type = var.use_efa == true ? "efa" : null
 
   tags = {
-      Name = "${var.name_tag} Head Node Network Adapter"
-      Project = var.project_tag
+    Name    = "${var.name_tag} Head Node Network Adapter"
+    Project = var.project_tag
   }
 }
 # base sg
@@ -329,25 +335,25 @@ resource "aws_security_group" "base_sg" {
 }
 
 resource "aws_security_group" "efs_sg" {
-   vpc_id = local.vpc_id
-   ingress {
-     self = true
-     from_port = 2049
-     to_port = 2049
-     protocol = "tcp"
-   }
-   # allow all outgoing from NFS
-   egress {
-      from_port = 0
-      to_port = 0
-      protocol = -1
-      cidr_blocks = ["0.0.0.0/0"]
-   }
-   
-   tags = {
-      Name = "${var.name_tag} EFS SG"
-      Project = var.project_tag
-   }
+  vpc_id = local.vpc_id
+  ingress {
+    self      = true
+    from_port = 2049
+    to_port   = 2049
+    protocol  = "tcp"
+  }
+  # allow all outgoing from NFS
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name    = "${var.name_tag} EFS SG"
+    Project = var.project_tag
+  }
 }
 
 resource "aws_security_group" "ssh_ingress" {
@@ -360,7 +366,7 @@ resource "aws_security_group" "ssh_ingress" {
     cidr_blocks = var.allowed_ssh_cidr_list
   }
   tags = {
-      Name = "${var.name_tag} SSH SG"
-      Project = var.project_tag
-   }
+    Name    = "${var.name_tag} SSH SG"
+    Project = var.project_tag
+  }
 }

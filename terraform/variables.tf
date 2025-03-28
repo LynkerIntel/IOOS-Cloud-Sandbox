@@ -49,7 +49,7 @@ variable "instance_type" {
   description = "EC2 Instance Type"
   type        = string
   default     = "t3.medium"
-  
+
 }
 
 variable "use_efa" {
@@ -61,7 +61,7 @@ variable "use_efa" {
 variable "key_name" {
   description = "The name of the key-pair used to access the EC2 instances"
   type        = string
-  default = "trial"
+  default     = "trial"
 }
 
 #variable "allowed_ssh_cidr" {
@@ -72,8 +72,8 @@ variable "key_name" {
 
 variable "allowed_ssh_cidr_list" {
   description = "Public IP address/range allowed for SSH access"
-  type = list
-  default = [ "0.0.0.0/0" ]
+  type        = list(any)
+  default     = ["0.0.0.0/0"]
 }
 
 variable "public_key" {
@@ -81,14 +81,14 @@ variable "public_key" {
   type        = string
 
   sensitive = true
-  default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM5SGDmS5HMtNkWkAR7rJNntiZKfCovuODF4MnpHlNoE mykel.alvis@Mykels-Mac-mini.local"
+  default   = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM5SGDmS5HMtNkWkAR7rJNntiZKfCovuODF4MnpHlNoE mykel.alvis@Mykels-Mac-mini.local"
 }
 
 variable "managed_policies" {
   description = "The attached IAM policies granting machine permissions"
   default = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-             "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-             "arn:aws:iam::aws:policy/AmazonFSxFullAccess"]
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  "arn:aws:iam::aws:policy/AmazonFSxFullAccess"]
 }
 
 variable "ami_id" {
