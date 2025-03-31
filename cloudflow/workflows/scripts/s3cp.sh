@@ -11,7 +11,7 @@ nwgofs..v3.2.1.fix.tgz
 shared.v3.2.1.fix.tgz
 '
 
-bucket="s3://ioos-cloud-sandbox/public/nosofs/fix"
+bucket="s3://lcsb-cloud-sandbox-working/public/nosofs/fix"
 
 for file in $flist
 do
