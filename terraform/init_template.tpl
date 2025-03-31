@@ -9,7 +9,7 @@ RUNUSER="ec2-user"
 # CentOS 7 - Stream 8
 #RUNUSER="centos"
 
-BRANCH=main
+BRANCH=feature/trial
 #BRANCH=origin/x86_64
 #BRANCH=origin/formainpr
 
@@ -53,7 +53,7 @@ cd /mnt/efs/fs1/save
 sudo mkdir $RUNUSER
 sudo chown $RUNUSER:$RUNUSER $RUNUSER
 cd $RUNUSER
-sudo -u $RUNUSER git clone https://github.com/ioos/Cloud-Sandbox.git
+sudo -u $RUNUSER git clone https://github.com/LynkerIntel/IOOS-Cloud-Sandbox.git
 cd Cloud-Sandbox
 sudo -u $RUNUSER git checkout -t $BRANCH
 cd scripts
@@ -63,7 +63,7 @@ export ami_name=${ami_name}
 echo "ami name : $ami_name"
 
 # Install all of the software and drivers
-sudo -E -u $RUNUSER ./setup-instance.sh >> ~/setup.log 2>&1
+# sudo -E -u $RUNUSER ./setup-instance.sh >> ~/setup.log 2>&1
 
 # TODO: Check for errors returned from any step above
 
