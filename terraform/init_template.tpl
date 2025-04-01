@@ -55,7 +55,7 @@ sudo chown $RUNUSER:$RUNUSER $RUNUSER
 cd $RUNUSER
 sudo -u $RUNUSER git clone https://github.com/LynkerIntel/IOOS-Cloud-Sandbox.git
 cd IOOS-Cloud-Sandbox
-sudo -u $RUNUSER git checkout -t $BRANCH
+sudo -u $RUNUSER git checkout --track origin/$BRANCH
 cd scripts
 
 # Need to pass ami_name
