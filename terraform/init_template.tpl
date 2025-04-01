@@ -54,7 +54,7 @@ sudo mkdir $RUNUSER
 sudo chown $RUNUSER:$RUNUSER $RUNUSER
 cd $RUNUSER
 sudo -u $RUNUSER git clone https://github.com/LynkerIntel/IOOS-Cloud-Sandbox.git
-cd Cloud-Sandbox
+cd IOOS-Cloud-Sandbox
 sudo -u $RUNUSER git checkout -t $BRANCH
 cd scripts
 

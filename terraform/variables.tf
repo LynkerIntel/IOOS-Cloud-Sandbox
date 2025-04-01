@@ -94,5 +94,5 @@ variable "managed_policies" {
 variable "ami_id" {
   description = "The random ID used for AMI creation"
   type        = string
-  default     = "unknown value"
+  default     = "trial-three"
 }
