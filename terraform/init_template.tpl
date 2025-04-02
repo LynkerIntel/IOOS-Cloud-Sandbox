@@ -38,9 +38,23 @@ sudo yum -y install amazon-efs-utils
 #   cd /tmp
 # fi
 
-echo "Waiting for EFS to be mounted..."
-sleep 5
-mount -t efs "${efs_name}" /mnt/efs/fs1
+echo "Waiting for EFS to be available..."
+RETVAL=-1
+COUNT=0
+while [ $RETVAL -ne 0 ]; do
+  if [ $COUNT -gt 0 ]; then
+    sleep 5
+    echo "Retrying to mount EFS..."
+    COUNT=$((COUNT + 1))
+    if [ $COUNT -gt 10 ]; then
+      echo "EFS mount failed after 10 attempts. Exiting."
+      exit 1
+    fi
+  fi
+  echo "Trying to mount EFS..."
+  sudo mount -t efs "${efs_name}" /mnt/efs/fs1
+  RETVAL=$?
+done
 echo "#${efs_name} /mnt/efs/fs1 efs defaults 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
