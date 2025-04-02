@@ -108,12 +108,18 @@ setup_paths () {
   set -x
   home=$PWD
 
-  if [ ! -d /mnt/efs/fs1 ]; then
+
+
+  # if [ ! -d /mnt/efs/fs1 ]; then
+  #   echo "ERROR: EFS disk is not mounted"
+  #   exit 1
+  # fi
+
+  cd /mnt/efs/fs1
+  if [ $? -ne 0 ]; then
     echo "ERROR: EFS disk is not mounted"
     exit 1
   fi
-
-  cd /mnt/efs/fs1
 
   if [ ! -d ptmp ] ; then
     sudo mkdir ptmp
