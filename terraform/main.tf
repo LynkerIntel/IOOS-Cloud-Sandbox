@@ -153,32 +153,33 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
 
 data "aws_ami" "rhel_8" {
   
-  owners = ["self"] # owners      = ["309956199498"]
+#  owners = ["self"] # owners      = ["309956199498"]
+  owners = ["309956199498"]
   most_recent = true
 
+  # filter {
+  #   name   = "image-id"
+  #   values = ["ami-029d4ac96b60510f3"]
+  # }
   filter {
-    name   = "image-id"
-    values = ["ami-029d4ac96b60510f3"]
+    name   = "name"
+    values = ["RHEL-8.7.0_HVM*"]
   }
-  # filter {
-  #   name   = "name"
-  #   values = ["RHEL-8.7.0_HVM-20230330-x86_64-56-Hourly2-GP2"]
-  # }
 
-  # filter {
-  #   name   = "architecture"
-  #   values = ["x86_64"]
-  # }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
 
-  # filter {
-  #   name   = "root-device-type"
-  #   values = ["ebs"]
-  # }
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
 
-  # filter {
-  #   name   = "virtualization-type"
-  #   values = ["hvm"]
-  # }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 
