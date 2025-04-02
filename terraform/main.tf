@@ -154,7 +154,7 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
 data "aws_ami" "rhel_8" {
   
 #  owners = ["self"] # owners      = ["309956199498"]
-  owners = ["redhat"]
+  owners = ["309956199498"]
   most_recent = true
 
   # filter {
