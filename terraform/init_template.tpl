@@ -22,26 +22,26 @@ sudo yum -y -q install git
 
 sudo yum -y install amazon-efs-utils
 
-if [ $? -ne 0 ]; then
-  # Error: Unable to find a match: amazon-efs-utils
-  # Alternate method
-  sudo yum -y install rpm-build
-  sudo yum -y install make
-#  sudo yum -y install openssl-devel
-#  sudo yum -y install cargo
-#  sudo yum -y install rust
-  cd /tmp
-  git clone -b $EFS_VERS https://github.com/aws/efs-utils
-  cd efs-utils
-  sudo make rpm
-  sudo yum -y install ./build/amazon-efs-utils*rpm
-  cd /tmp
-fi
+# if [ $? -ne 0 ]; then
+#   # Error: Unable to find a match: amazon-efs-utils
+#   # Alternate method
+#   sudo yum -y install rpm-build
+#   sudo yum -y install make
+# #  sudo yum -y install openssl-devel
+# #  sudo yum -y install cargo
+# #  sudo yum -y install rust
+#   cd /tmp
+#   git clone -b $EFS_VERS https://github.com/aws/efs-utils
+#   cd efs-utils
+#   sudo make rpm
+#   sudo yum -y install ./build/amazon-efs-utils*rpm
+#   cd /tmp
+# fi
 
 echo "Waiting for EFS to be mounted..."
 sleep 5
-sudo mount -t nfs4  -o defaults,_netdev "${efs_name}:/" /mnt/efs/fs1
-sudo echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
+mount -t nfs4  -o defaults,_netdev "${efs_name}:/" /mnt/efs/fs1
+echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
