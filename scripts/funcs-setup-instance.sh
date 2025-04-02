@@ -110,11 +110,6 @@ setup_paths () {
 
 
 
-  # if [ ! -d /mnt/efs/fs1 ]; then
-  #   echo "ERROR: EFS disk is not mounted"
-  #   exit 1
-  # fi
-
   cd /mnt/efs/fs1
   if [ $? -ne 0 ]; then
     echo "ERROR: EFS disk is not mounted"
