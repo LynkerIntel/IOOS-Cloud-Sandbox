@@ -154,7 +154,7 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
 data "aws_ami" "rhel_8" {
   
 #  owners = ["self"] # owners      = ["309956199498"]
-  owners = ["309956199498"]
+  owners = ["redhat"]
   most_recent = true
 
   # filter {
@@ -163,7 +163,7 @@ data "aws_ami" "rhel_8" {
   # }
   filter {
     name   = "name"
-    values = ["RHEL-8.7.0_HVM*"]
+    values = ["RHEL-8.8*2025*"]
   }
 
   filter {
