@@ -38,8 +38,10 @@ if [ $? -ne 0 ]; then
   cd /tmp
 fi
 
-mount -t nfs4 "${efs_name}:/" /mnt/efs/fs1
-echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
+echo "Waiting for EFS to be mounted..."
+sleep 5
+sudo mount -t nfs4  -o defaults,_netdev "${efs_name}:/" /mnt/efs/fs1
+sudo echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
