@@ -9,11 +9,11 @@ RUNUSER="ec2-user"
 # CentOS 7 - Stream 8
 #RUNUSER="centos"
 
-BRANCH=feature/trial
+export BRANCH=feature/trial
 #BRANCH=origin/x86_64
 #BRANCH=origin/formainpr
 
-EFS_VERS='v1.36.0'
+export EFS_VERS='v1.36.0'
 
 # Mount the EFS volume
 
@@ -23,10 +23,10 @@ sudo yum -y -q install git
 sudo yum -y install amazon-efs-utils
 
 if [ $? -ne 0 ]; then
+  echo "amazon-efs-utils not found, trying to build from source..."
   # Error: Unable to find a match: amazon-efs-utils
   # Alternate method
-  sudo yum -y install rpm-build
-  sudo yum -y install make
+  sudo yum -y install rpm-build make
 #  sudo yum -y install openssl-devel
 #  sudo yum -y install cargo
 #  sudo yum -y install rust
@@ -45,7 +45,7 @@ while [ $RETVAL -ne 0 ]; do
   if [ $COUNT -gt 0 ]; then
     sleep 5
     echo "Retrying to mount EFS..."
-    COUNT=$(expr $COUNT + 1))
+    COUNT=$(expr $COUNT + 1)
     if [ $COUNT -gt 10 ]; then
       echo "EFS mount failed after 10 attempts. Exiting."
       exit 1
