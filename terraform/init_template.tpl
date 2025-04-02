@@ -52,10 +52,10 @@ while [ $RETVAL -ne 0 ]; do
     fi
   fi
   echo "Trying to mount EFS..."
-  sudo mount -t efs "${efs_name}" /mnt/efs/fs1
+  mount -t efs "${efs_name}" /mnt/efs/fs1
   RETVAL=$?
 done
-echo "#${efs_name} /mnt/efs/fs1 efs defaults 0 0" >> /etc/fstab
+echo "${efs_name} /mnt/efs/fs1 efs defaults 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
