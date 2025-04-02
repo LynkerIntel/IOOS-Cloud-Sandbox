@@ -40,8 +40,8 @@ sudo yum -y install amazon-efs-utils
 
 echo "Waiting for EFS to be mounted..."
 sleep 5
-mount -t nfs4  -o defaults,_netdev "${efs_name}:/" /mnt/efs/fs1
-echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
+mount -t efs "${efs_name}" /mnt/efs/fs1
+echo "#${efs_name} /mnt/efs/fs1 efs defaults 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
