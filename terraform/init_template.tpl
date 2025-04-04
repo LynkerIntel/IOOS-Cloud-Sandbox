@@ -6,6 +6,14 @@ echo `date` > ~/setup.log
 # RHEL8+
 RUNUSER="ec2-user"
 
+sudo dnf -y install https://s3.amazonaws.com/amazoncloudwatch/amazon-cloudwatch-agent.rpm
+sudo dnf -y install https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+sudo dnf -y install https://s3.amazonaws.com/mountpoint-s3-release/latest/x86_64/mount-s3.rpm
+sudo systemctl enable amazon-ssm-agent
+sudo systemctl start amazon-ssm-agent
+sudo systemctl enable amazon-cloudwatch-agent
+sudo systemctl start amazon-cloudwatch-agent
+
 # CentOS 7 - Stream 8
 #RUNUSER="centos"
 
@@ -26,7 +34,8 @@ if [ $? -ne 0 ]; then
   echo "amazon-efs-utils not found, trying to build from source..."
   # Error: Unable to find a match: amazon-efs-utils
   # Alternate method
-  sudo yum -y install rpm-build make
+  sudo dnf -y install rpm-build make 
+  # sudo dnf -y install libcurl-devel libuuid-devel libssl-dev
 #  sudo yum -y install openssl-devel
 #  sudo yum -y install cargo
 #  sudo yum -y install rust
@@ -39,13 +48,12 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Waiting for EFS to be available..."
-RETVAL=-1
-COUNT=0
+export RETVAL=-1
+export COUNT=0
 while [ $RETVAL -ne 0 ]; do
   if [ $COUNT -gt 0 ]; then
     sleep 5
     echo "Retrying to mount EFS..."
-    COUNT=$(expr $COUNT + 1)
     if [ $COUNT -gt 10 ]; then
       echo "EFS mount failed after 10 attempts. Exiting."
       exit 1
@@ -53,9 +61,10 @@ while [ $RETVAL -ne 0 ]; do
   fi
   echo "Trying to mount EFS..."
   mount -t efs "${efs_name}" /mnt/efs/fs1
-  RETVAL=$?
+  export RETVAL=$?
+  export COUNT=$(expr $COUNT + 1)
 done
-echo "${efs_name} /mnt/efs/fs1 efs defaults 0 0" >> /etc/fstab
+echo "${efs_name}:/ /mnt/efs/fs1 efs _netdev,noresvport,tls,iam 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
@@ -80,7 +89,7 @@ echo "ami name : $ami_name"
 
 # Install all of the software and drivers
 sleep 10
-sudo -E -u $RUNUSER ./setup-instance.sh >> ~/setup.log 2>&1
+sudo -E -u $RUNUSER time ./setup-instance.sh >> ~/setup.log 2>&1
 
 # TODO: Check for errors returned from any step above
 

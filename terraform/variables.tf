@@ -48,7 +48,7 @@ variable "project_tag" {
 variable "instance_type" {
   description = "EC2 Instance Type"
   type        = string
-  default     = "t3.medium"
+  default     = "c5.4xlarge"
 
 }
 
@@ -86,9 +86,11 @@ variable "public_key" {
 
 variable "managed_policies" {
   description = "The attached IAM policies granting machine permissions"
-  default = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+  default = [
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  "arn:aws:iam::aws:policy/AmazonFSxFullAccess"]
+    "arn:aws:iam::aws:policy/AmazonFSxFullAccess"
+  ]
 }
 
 variable "ami_id" {

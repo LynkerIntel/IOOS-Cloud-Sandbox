@@ -30,65 +30,6 @@ data "aws_internet_gateway" "gw" {
     values = [local.vpc_id]
   }
 }
-# resource "aws_iam_role" "sandbox_iam_role" {
-#   name               = "${var.nameprefix}-${var.availability_zone}_terraform_role"
-#   assume_role_policy = jsonencode(
-#     {
-#       Version = "2012-10-17",
-#       Statement = [
-#         {
-#           Action = "sts:AssumeRole",
-#           Sid    = "AttachedIAMRole",
-#           Principal = {
-#             Service = [
-#               "ec2.amazonaws.com"
-#             ]
-#           },
-#           Effect = "Allow"
-#         }
-#       ]
-#     }
-#   )
-#   tags = {
-#     Name    = "${var.name_tag} IAM Role"
-#     Project = var.project_tag
-#   }
-# }
-
-# resource "aws_iam_role_policy" "sandbox_iam_role_policy" {
-#   name   = "${var.nameprefix}-${var.availability_zone}_terraform_role_policy"
-#   policy = jsonencode(
-#     {
-#       Version = "2012-10-17",
-#       Statement = [
-#         {
-#             "Sid": "ListObjectsInBucket",
-#             "Effect": "Allow",
-#             "Action": ["s3:ListBucket"],
-#             "Resource": ["arn:aws:s3:::lcsb-coastalsb-*puts"]
-#         },
-#         {
-#             "Sid": "AllObjectActions",
-#             "Effect": "Allow",
-#             "Action": "s3:*Object",
-#             "Resource": ["arn:aws:s3:::lcsb-coastalsb-*puts/*"]
-#         }
-#       ]
-#     }
-#   )
-#   role   = aws_iam_role.sandbox_iam_role.id
-# }
-
-# resource "aws_iam_role_policy_attachment" "sandbox_role_policy_attach" {
-#   count      = length(var.managed_policies)
-#   policy_arn = element(var.managed_policies, count.index)
-#   role       = aws_iam_role.sandbox_iam_role.name
-# }
-
-# resource "aws_iam_instance_profile" "cloud_sandbox_iam_instance_profile" {
-#   name = "${var.nameprefix}-${var.availability_zone}_terraform_instance_profile"
-#   role = aws_iam_role.sandbox_iam_role.name
-# }
 
 resource "aws_placement_group" "cloud_sandbox_placement_group" {
   name     = "${var.nameprefix}-${var.availability_zone}_Terraform_Placement_Group"
@@ -98,23 +39,8 @@ resource "aws_placement_group" "cloud_sandbox_placement_group" {
   }
 }
 
-resource "aws_vpc" "cloud_vpc" {
-  # we only will create this vpc if vpc_id is not passed in as a variable
-  count = local.vpc_id != null ? 0 : 1
-  # This is a large vpc, 256 x 256 IPs available
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-  tags = {
-    Name    = "${var.name_tag} VPC"
-    Project = var.project_tag
-  }
-}
-
-
 data "aws_vpc" "pre-provisioned" {
   # the pre-provisioned VPC will be returned if vpc_id matches an existing VPC
-  count = local.vpc_id != null ? 1 : 0
   id    = local.vpc_id
 }
 
@@ -127,7 +53,7 @@ resource "aws_efs_file_system" "main_efs" {
   encrypted              = false
   availability_zone_name = var.availability_zone
   tags = {
-    Name    = "${var.name_tag} EFS"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} EFS"
     Project = var.project_tag
   }
 }
@@ -152,9 +78,9 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
 ##################################
 
 data "aws_ami" "rhel_8" {
-  
-#  owners = ["self"] # owners      = ["309956199498"]
-  owners = ["309956199498"]
+
+  #  owners = ["self"] # owners      = ["309956199498"]
+  owners      = ["309956199498"]
   most_recent = true
 
   # filter {
@@ -221,7 +147,7 @@ data "aws_ami" "centos_stream_9" {
 resource "aws_eip" "head_node" {
   instance = aws_instance.head_node.id
   tags = {
-    Name    = "${var.name_tag} Elastic IP"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} Elastic IP"
     Project = var.project_tag
   }
 }
@@ -254,7 +180,7 @@ resource "aws_instance" "head_node" {
     volume_size           = 16
     volume_type           = "gp3"
     tags = {
-      Name    = "${var.name_tag} Head Node"
+      Name    = "${var.name_tag}-${random_pet.ami_id.id} Head Root Volume"
       Project = var.project_tag
     }
 
@@ -287,7 +213,7 @@ resource "aws_instance" "head_node" {
   placement_group = var.use_efa == true ? aws_placement_group.cloud_sandbox_placement_group.id : null
 
   tags = {
-    Name    = "${var.name_tag} EC2 Head Node"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} Head"
     Project = var.project_tag
   }
 }
@@ -315,7 +241,7 @@ resource "aws_network_interface" "head_node" {
   interface_type = var.use_efa == true ? "efa" : null
 
   tags = {
-    Name    = "${var.name_tag} Head Node Network Adapter"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} Head Network Adapter"
     Project = var.project_tag
   }
 }
@@ -335,7 +261,7 @@ resource "aws_security_group" "base_sg" {
     protocol  = -1
   }
   tags = {
-    Name    = "${var.name_tag} Base SG"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} Base SG"
     Project = var.project_tag
   }
 }
@@ -357,7 +283,7 @@ resource "aws_security_group" "efs_sg" {
   }
 
   tags = {
-    Name    = "${var.name_tag} EFS SG"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} EFS SG"
     Project = var.project_tag
   }
 }
@@ -372,7 +298,7 @@ resource "aws_security_group" "ssh_ingress" {
     cidr_blocks = var.allowed_ssh_cidr_list
   }
   tags = {
-    Name    = "${var.name_tag} SSH SG"
+    Name    = "${var.name_tag}-${random_pet.ami_id.id} SSH SG"
     Project = var.project_tag
   }
 }
