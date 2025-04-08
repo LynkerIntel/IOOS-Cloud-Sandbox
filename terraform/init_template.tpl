@@ -86,7 +86,7 @@ cd scripts
 # Need to pass ami_name
 export ami_name=${ami_name}
 echo "ami name : $ami_name"
-
+sudo dnf -y install time
 # Install all of the software and drivers
 sleep 10
 sudo -E -u $RUNUSER time ./setup-instance.sh >> ~/setup.log 2>&1
