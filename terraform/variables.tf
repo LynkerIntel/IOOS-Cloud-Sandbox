@@ -1,7 +1,7 @@
 variable "profile" {
   description = "AWS profile to use"
   type        = string
-  default     = "lcsb-admin"
+  default     = "csb-admin"
 }
 variable "availability_zone" {
   description = "Availability zone to use"
@@ -18,7 +18,7 @@ variable "region" {
 variable "nameprefix" {
   description = "Prefix to use for some resource names to avoid duplicates"
   type        = string
-  default     = "lcsb_trial"
+  default     = "csb_trial"
 }
 
 variable "environment" {

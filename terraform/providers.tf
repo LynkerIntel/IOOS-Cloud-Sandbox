@@ -7,10 +7,10 @@ terraform {
   }
   backend "s3" {
     profile        = var.profile
-    bucket         = "lcsb-terraform-state"
+    bucket         = "csb-terraform-state"
     key            = "tfstate/trial/terraform.tfstate"
     region         = "us-east-2"
-    dynamodb_table = "lcsb-terraform-state-lock"
+    dynamodb_table = "csb-terraform-state-lock"
   }
 
 }

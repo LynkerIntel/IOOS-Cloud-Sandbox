@@ -3,9 +3,9 @@
 data "terraform_remote_state" "bootstrap" {
   backend = "s3"
   config = {
-    profile = "lcsb-admin"
-    bucket  = "lcsb-terraform-state"
-    key     = "tfstate/lcsb-bootstrap/terraform.tfstate"
+    profile = "csb-admin"
+    bucket  = "csb-terraform-state"
+    key     = "tfstate/csb-bootstrap/terraform.tfstate"
     region  = "us-east-2"
   }
 }
