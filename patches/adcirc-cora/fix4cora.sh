@@ -12,8 +12,8 @@ spack uninstall -y --dependents netcdf-fortran@4.6.1
 # Rebuild mirror 
 
 export SPACK_DIR='/save/environments/spack'
-export SPACK_MIRROR='s3://lcsb-cloud-sandbox-working/public/spack/mirror'
-export SPACK_KEY_URL='https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
+export SPACK_MIRROR='s3://csb-cloud-sandbox-working/public/spack/mirror'
+export SPACK_KEY_URL='https://csb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
 
 # These are to write changes to the S3 bucket
 # spack buildcache rebuild-index  $SPACK_MIRROR  # Full sync with build cache - Pushes it to S3

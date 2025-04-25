@@ -246,8 +246,8 @@ install_spack-stack() {
   echo "Running ${FUNCNAME[0]} ..."
   home=$PWD
 
-  SPACK_MIRROR='s3://lcsb-cloud-sandbox-working/public/spack/mirror'
-  SPACK_KEY_URL='https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
+  SPACK_MIRROR='s3://csb-cloud-sandbox-working/public/spack/mirror'
+  SPACK_KEY_URL='https://csb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
   SPACK_KEY="$SPACK_DIR/opt/spack/gpg/spack.mirror.gpgkey.pub"
 
   cd /save/environments
@@ -268,8 +268,8 @@ install_spack() {
 
   source /opt/rh/gcc-toolset-11/enable
 
-  SPACK_MIRROR='s3://lcsb-cloud-sandbox-working/public/spack/mirror'
-  SPACK_KEY_URL='https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
+  SPACK_MIRROR='s3://csb-cloud-sandbox-working/public/spack/mirror'
+  SPACK_KEY_URL='https://csb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
   SPACK_KEY="$SPACK_DIR/opt/spack/gpg/spack.mirror.gpgkey.pub"
 
   echo "Installing SPACK in $SPACK_DIR ..."
@@ -553,7 +553,7 @@ install_munge_s3 () {
   mkdir /tmp/munge
   cd /tmp/munge
 
-  wget -nv https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/munge-0.5.14-rpms.tgz
+  wget -nv https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/munge-0.5.14-rpms.tgz
   tar -xvzf munge-0.5.14-rpms.tgz
   sudo yum -y localinstall munge-0.5.14-2.el7.x86_64.rpm munge-devel-0.5.14-2.el7.x86_64.rpm \
      munge-libs-0.5.14-2.el7.x86_64.rpm
@@ -930,7 +930,7 @@ install_slurm-s3() {
   mkdir /tmp/slurminstall
   cd /tmp/slurminstall
 
-  wget -nv https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/slurm-20.11.5-rpms.tgz
+  wget -nv https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/slurm-20.11.5-rpms.tgz
   tar -xzvf slurm-20.11.5-rpms.tgz
   sudo yum -y localinstall slurm-20.11.5-1.el7.x86_64.rpm
 }
@@ -991,7 +991,7 @@ install_base_rpms () {
   mkdir -p "$wrkdir"
   cd "$wrkdir"
 
-  wget -nv https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$libstar
+  wget -nv https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$libstar
   tar -xf $libstar
   rm $libstar
 
@@ -1043,7 +1043,7 @@ install_ncep_rpms () {
   mkdir -p "$wrkdir"
   cd "$wrkdir"
 
-  wget -nv https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$libstar
+  wget -nv https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$libstar
   tar -xf $libstar
   rm $libstar
 
@@ -1155,7 +1155,7 @@ install_ffmpeg () {
   mkdir -p "$wrkdir"
   cd "$wrkdir"
 
-  wget -nv https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$tarfile
+  wget -nv https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/$tarfile
   tar -xf $tarfile
   rm $tarfile
  

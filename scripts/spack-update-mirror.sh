@@ -2,8 +2,8 @@
 # set -x
 
 SPACK_DIR='/save/environments/spack'
-SPACK_MIRROR=s3://lcsb-cloud-sandbox-working/public/spack/mirror
-SPACK_KEY_URL='https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
+SPACK_MIRROR=s3://csb-cloud-sandbox-working/public/spack/mirror
+SPACK_KEY_URL='https://csb-cloud-sandbox-working.s3.amazonaws.com/public/spack/mirror/spack.mirror.gpgkey.pub'
 SPACK_KEY="$SPACK_DIR/opt/spack/gpg/spack.mirror.gpgkey.pub"
 JOBS=4
 

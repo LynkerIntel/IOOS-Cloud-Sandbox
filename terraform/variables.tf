@@ -24,7 +24,7 @@ variable "nameprefix" {
 variable "environment" {
   description = "Environment to use for tagging"
   type        = string
-  default     = "LCSB"
+  default     = "CSB"
 }
 
 variable "owner" {
@@ -36,13 +36,13 @@ variable "owner" {
 variable "name_tag" {
   description = "Value of the Name tag for the EC2 instance"
   type        = string
-  default     = "LCSB-Trial"
+  default     = "CSB-Trial"
 }
 
 variable "project_tag" {
   description = "Value of the Project tag for the EC2 instance"
   type        = string
-  default     = "LCSB-Trial"
+  default     = "CSB-Trial"
 }
 
 variable "instance_type" {

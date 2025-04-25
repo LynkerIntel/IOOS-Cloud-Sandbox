@@ -16,7 +16,7 @@ variable "aws_region" {
 
 variable "aws_profile" {
   type    = string
-  default = "lcsb-admin"
+  default = "csb-admin"
 }
 
 variable "instance_type" {
@@ -26,7 +26,7 @@ variable "instance_type" {
 
 variable "ami_name_prefix" {
   type    = string
-  default = "lcsb-cloud-sandbox"
+  default = "csb-cloud-sandbox"
 }
 
 variable "aws_vpc_id" {
@@ -70,7 +70,7 @@ source "amazon-ebs" "almalinux" {
 }
 
 build {
-  name    = "lcsb-cloud-sandbox"
+  name    = "csb-cloud-sandbox"
   sources = ["source.amazon-ebs.almalinux"]
 
   provisioner "shell" {

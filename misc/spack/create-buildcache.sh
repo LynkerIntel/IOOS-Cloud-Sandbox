@@ -38,4 +38,4 @@ export TMP=/save/tmp
 
 spack buildcache create -a --mirror-name s3-mirror $pkgs
 
-spack buildcache update-index -d s3://lcsb-cloud-sandbox-working/public/spack/mirror/
+spack buildcache update-index -d s3://csb-cloud-sandbox-working/public/spack/mirror/

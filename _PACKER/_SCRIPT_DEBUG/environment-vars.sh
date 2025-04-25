@@ -34,7 +34,7 @@ EFA_INSTALLER_VER='1.38.0'
 
 SPACK_CACHEONLY=0
 
-SPACK_MIRROR='s3://lcsb-cloud-sandbox-working/public/spack/mirror'
+SPACK_MIRROR='s3://csb-cloud-sandbox-working/public/spack/mirror'
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------

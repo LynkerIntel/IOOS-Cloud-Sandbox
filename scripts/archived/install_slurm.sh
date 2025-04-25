@@ -17,7 +17,7 @@ SPACK_DIR='/save/environments/spack'
 sudo yum -y install libtool
 sudo yum -y install bzip2-devel
 
-wget https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/munge-0.5.14-rpms.tgz
+wget https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/munge-0.5.14-rpms.tgz
 tar -xzvf munge-0.5.14-rpms.tgz
 sudo yum -y localinstall munge-0.5.14-2.el7.x86_64.rpm munge-libs-0.5.14-2.el7.x86_64.rpm munge-devel-0.5.14-2.el7.x86_64.rpm
 
@@ -40,7 +40,7 @@ spack load gcc@8.5.0
 #wget https://download.schedmd.com/slurm/slurm-21.08.6.tar.bz2
 #rpmbuild -ta slurm*.tar.bz2
 
-wget https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/libs/slurm-20.11.5-rpms.tgz
+wget https://csb-cloud-sandbox-working.s3.amazonaws.com/public/libs/slurm-20.11.5-rpms.tgz
 tar -xzvf slurm-20.11.5-rpms.tgz
 
 #sudo yum install perl-Switch

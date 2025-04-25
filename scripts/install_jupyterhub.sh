@@ -37,7 +37,7 @@
   # configurable-http-proxy --default-target=http://localhost:8888
 
   # Copy config over
-  # sudo curl "https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/jupyterhub/jupyterhub_config.py" -o /opt/jupyterhub/jupyterhub_config.py
+  # sudo curl "https://csb-cloud-sandbox-working.s3.amazonaws.com/public/jupyterhub/jupyterhub_config.py" -o /opt/jupyterhub/jupyterhub_config.py
   sudo cp system/jupyterhub_config.py /opt/jupyterhub/jupyterhub_config.py
 
   # create systemd service
@@ -45,7 +45,7 @@
   sudo chown jupyter:jupyter /opt/jupyterhub
 
   sudo mkdir -p /opt/jupyterhub/etc/systemd
-  #sudo curl "https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/jupyterhub/jupyterhub.service" -o /opt/jupyterhub/etc/systemd/jupyterhub.service
+  #sudo curl "https://csb-cloud-sandbox-working.s3.amazonaws.com/public/jupyterhub/jupyterhub.service" -o /opt/jupyterhub/etc/systemd/jupyterhub.service
   sudo cp system/jupyterhub.service /opt/jupyterhub/etc/systemd/jupyterhub.service
   sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /usr/lib/systemd/system/jupyterhub.service
   sudo systemctl daemon-reload
