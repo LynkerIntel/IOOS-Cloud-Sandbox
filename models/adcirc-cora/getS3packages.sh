@@ -9,6 +9,6 @@ files="2018.ioos_sb.tgz
 
 for f in $files
 do
-  aws s3 cp s3://ioos-cloud-sandbox/public/cora-adcirc/$f .
+  aws s3 cp s3://lcsb-cloud-sandbox-working/public/cora-adcirc/$f .
   tar -xvf $f
 done

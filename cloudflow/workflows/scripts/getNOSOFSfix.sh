@@ -55,7 +55,7 @@ do
   tarfile=$dir.${version}.fix.tgz
   tar -czvf $tarfile $dir
   aws s3 cp $tarfile s3://${bucket}/public/nosofs/fix/${tarfile} --acl public-read
-  #https://ioos-cloud-sandbox.s3.amazonaws.com/public/nosofs/fix/cbofs.v3.2.1.fix.tgz
+  #https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/nosofs/fix/cbofs.v3.2.1.fix.tgz
   rm $tarfile
 done
 

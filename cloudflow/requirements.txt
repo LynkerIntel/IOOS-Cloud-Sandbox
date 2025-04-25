@@ -10,3 +10,4 @@ Pillow
 boto3
 cartopy
 xarray
+watchtower

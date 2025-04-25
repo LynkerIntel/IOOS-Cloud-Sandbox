@@ -25,7 +25,7 @@ fi
 mkdir -p $COMROT
 cd $COMROT
 
-url=https://ioos-cloud-sandbox.s3.amazonaws.com/public/wrfroms
+url=https://lcsb-cloud-sandbox-working.s3.amazonaws.com/public/wrfroms
 forcing_file=wrfroms.forcings.${CDATE}.tgz
 
 echo "Retrieving forcing from S3 ..."

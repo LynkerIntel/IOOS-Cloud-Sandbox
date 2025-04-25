@@ -6,14 +6,22 @@ echo `date` > ~/setup.log
 # RHEL8+
 RUNUSER="ec2-user"
 
+sudo dnf -y install https://s3.amazonaws.com/amazoncloudwatch/amazon-cloudwatch-agent.rpm
+sudo dnf -y install https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+sudo dnf -y install https://s3.amazonaws.com/mountpoint-s3-release/latest/x86_64/mount-s3.rpm
+sudo systemctl enable amazon-ssm-agent
+sudo systemctl start amazon-ssm-agent
+sudo systemctl enable amazon-cloudwatch-agent
+sudo systemctl start amazon-cloudwatch-agent
+
 # CentOS 7 - Stream 8
 #RUNUSER="centos"
 
-BRANCH=main
+export BRANCH=feature/trial
 #BRANCH=origin/x86_64
 #BRANCH=origin/formainpr
 
-EFS_VERS='v1.36.0'
+export EFS_VERS='v1.36.0'
 
 # Mount the EFS volume
 
@@ -23,10 +31,11 @@ sudo yum -y -q install git
 sudo yum -y install amazon-efs-utils
 
 if [ $? -ne 0 ]; then
+  echo "amazon-efs-utils not found, trying to build from source..."
   # Error: Unable to find a match: amazon-efs-utils
   # Alternate method
-  sudo yum -y install rpm-build
-  sudo yum -y install make
+  sudo dnf -y install rpm-build make 
+  # sudo dnf -y install libcurl-devel libuuid-devel libssl-dev
 #  sudo yum -y install openssl-devel
 #  sudo yum -y install cargo
 #  sudo yum -y install rust
@@ -38,8 +47,24 @@ if [ $? -ne 0 ]; then
   cd /tmp
 fi
 
-mount -t nfs4 "${efs_name}:/" /mnt/efs/fs1
-echo "${efs_name}:/ /mnt/efs/fs1 nfs defaults,_netdev 0 0" >> /etc/fstab
+echo "Waiting for EFS to be available..."
+export RETVAL=-1
+export COUNT=0
+while [ $RETVAL -ne 0 ]; do
+  if [ $COUNT -gt 0 ]; then
+    sleep 5
+    echo "Retrying to mount EFS..."
+    if [ $COUNT -gt 10 ]; then
+      echo "EFS mount failed after 10 attempts. Exiting."
+      exit 1
+    fi
+  fi
+  echo "Trying to mount EFS..."
+  mount -t efs "${efs_name}" /mnt/efs/fs1
+  export RETVAL=$?
+  export COUNT=$(expr $COUNT + 1)
+done
+echo "${efs_name}:/ /mnt/efs/fs1 efs _netdev,noresvport,tls,iam 0 0" >> /etc/fstab
 
 cd /mnt/efs/fs1
 if [ ! -d save ] ; then
@@ -53,17 +78,18 @@ cd /mnt/efs/fs1/save
 sudo mkdir $RUNUSER
 sudo chown $RUNUSER:$RUNUSER $RUNUSER
 cd $RUNUSER
-sudo -u $RUNUSER git clone https://github.com/ioos/Cloud-Sandbox.git
-cd Cloud-Sandbox
-sudo -u $RUNUSER git checkout -t $BRANCH
+sudo -u $RUNUSER git clone https://github.com/LynkerIntel/IOOS-Cloud-Sandbox.git
+cd IOOS-Cloud-Sandbox
+sudo -u $RUNUSER git checkout --track origin/$BRANCH
 cd scripts
 
 # Need to pass ami_name
 export ami_name=${ami_name}
 echo "ami name : $ami_name"
-
+sudo dnf -y install time
 # Install all of the software and drivers
-sudo -E -u $RUNUSER ./setup-instance.sh >> ~/setup.log 2>&1
+sleep 10
+sudo -E -u $RUNUSER time ./setup-instance.sh >> ~/setup.log 2>&1
 
 # TODO: Check for errors returned from any step above
 
