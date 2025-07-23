@@ -29,31 +29,33 @@ setup_environment () {
   sudo subscription-manager config --rhsm.manage_repos=0
   sudo sed -i 's/enabled[ ]*=[ ]*1/enabled=0/g' /etc/yum/pluginconf.d/subscription-manager.conf
 
-  sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+  # Handed in base playbook
+  # sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
   # yum update might update the kernel. 
   # This might cause some of the other installs to fail, e.g. efa driver 
   #sudo yum -y update
 
-  sudo yum -y install tcsh
-  sudo yum -y install ksh
-  sudo yum -y install wget
-  sudo yum -y install unzip
-  sudo yum -y install time.x86_64
-  sudo yum -y install glibc-devel
-  sudo yum -y install gcc-c++
-  sudo yum -y install patch
-  sudo yum -y install bzip2
-  sudo yum -y install bzip2-devel
-  sudo yum -y install automake
-  sudo yum -y install vim-enhanced
-  sudo yum -y install subversion
-  sudo yum -y install bc
+  # Moved to playbook
+  # sudo yum -y install tcsh
+  # sudo yum -y install ksh
+  # sudo yum -y install wget
+  # sudo yum -y install unzip
+  # sudo yum -y install time.x86_64
+  # sudo yum -y install glibc-devel
+  # sudo yum -y install gcc-c++
+  # sudo yum -y install patch
+  # sudo yum -y install bzip2
+  # sudo yum -y install bzip2-devel
+  # sudo yum -y install automake
+  # sudo yum -y install vim-enhanced
+  # sudo yum -y install subversion
+  # sudo yum -y install bc
 
-  sudo yum -y install python3.11-devel
+  # sudo yum -y install python3.11-devel
   sudo alternatives --set python3 /usr/bin/python3.11
-  sudo yum -y install python3.11-pip
-  sudo yum -y install jq
+  # sudo yum -y install python3.11-pip
+  # sudo yum -y install jq
 
   # Additional packages for spack-stack
   #sudo yum -y install git-lfs
@@ -63,36 +65,41 @@ setup_environment () {
   #sudo yum -y install texlive
   #sudo yum -y install mysql-server
 
-  cliver="2.10.0"
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${cliver}.zip" -o "awscliv2.zip"
-  /usr/bin/unzip -q awscliv2.zip
-  sudo ./aws/install
-  rm awscliv2.zip
-  sudo rm -Rf "./aws"
-
-  sudo yum -y install environment-modules
-
-  # Only do this once
-  grep "/usr/share/Modules/init/bash" ~/.bashrc >& /dev/null
-  if [ $? -eq 1 ] ; then
-    echo . /usr/share/Modules/init/bash >> ~/.bashrc
-    echo source /usr/share/Modules/init/tcsh >> ~/.tcshrc 
-    . /usr/share/Modules/init/bash
-  fi
+  # Already do this in the playbook
+  # cliver="2.10.0"
+  # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${cliver}.zip" -o "awscliv2.zip"
+  # /usr/bin/unzip -q awscliv2.zip
+  # sudo ./aws/install
+  # rm awscliv2.zip
+  # sudo rm -Rf "./aws"
+  # 
+  # sudo yum -y install environment-modules
 
   # Only do this once
-  if [ ! -d /save/environments/modulefiles ] ; then
-    sudo mkdir -p /save/environments/modulefiles
-    echo "/save/environments/modulefiles" | sudo tee -a ${MODULESHOME}/init/.modulespath
-    echo "/usrx/modulefiles" | sudo tee -a ${MODULESHOME}/init/.modulespath
-    echo ". /usr/share/Modules/init/bash" | sudo tee -a /etc/profile.d/custom.sh
-    echo "source /usr/share/Modules/init/csh" | sudo tee -a /etc/profile.d/custom.csh
-    echo "module use -a /usrx/modulefiles" >> ~/.bashrc
-    . ~/.bashrc
-  fi
+  # Performed in playbook.
+  # Sourcing of the bash script (around line 85 +/-) is not done, but
+  # executing shell tasks in the playbook will source the bash script
+  # grep "/usr/share/Modules/init/bash" ~/.bashrc >& /dev/null
+  # if [ $? -eq 1 ] ; then
+  #   echo . /usr/share/Modules/init/bash >> ~/.bashrc
+  #   echo source /usr/share/Modules/init/tcsh >> ~/.tcshrc 
+  #   . /usr/share/Modules/init/bash
+  # fi
+  #
+  # # Only do this once
+  # if [ ! -d /save/environments/modulefiles ] ; then
+  #   sudo mkdir -p /save/environments/modulefiles
+  #   echo "/save/environments/modulefiles" | sudo tee -a ${MODULESHOME}/init/.modulespath
+  #   echo "/usrx/modulefiles" | sudo tee -a ${MODULESHOME}/init/.modulespath
+  #   echo ". /usr/share/Modules/init/bash" | sudo tee -a /etc/profile.d/custom.sh
+  #   echo "source /usr/share/Modules/init/csh" | sudo tee -a /etc/profile.d/custom.csh
+  #   echo "module use -a /usrx/modulefiles" >> ~/.bashrc
+  #   . ~/.bashrc
+  # fi
 
-  # Add unlimited stack size 
-  echo "ulimit -s unlimited" | sudo tee -a /etc/profile.d/custom.sh
+  # Handled in step02_setup_instance_playbook.yml
+  # # Add unlimited stack size 
+  # echo "ulimit -s unlimited" | sudo tee -a /etc/profile.d/custom.sh
 
   # sudo yum clean {option}
   cd $home
@@ -105,43 +112,44 @@ setup_paths () {
 
   echo "Running ${FUNCNAME[0]} ..."
 
-  set -x
-  home=$PWD
+# Handeled in step01_preconfig_clone_playbook.yml
+#   set -x
+#   home=$PWD
 
-  if [ ! -d /mnt/efs/fs1 ]; then
-    echo "ERROR: EFS disk is not mounted"
-    exit 1
-  fi
+#   if [ ! -d /mnt/efs/fs1 ]; then
+#     echo "ERROR: EFS disk is not mounted"
+#     exit 1
+#   fi
 
-  cd /mnt/efs/fs1
+#   cd /mnt/efs/fs1
 
-  if [ ! -d ptmp ] ; then
-    sudo mkdir ptmp
-    sudo chgrp wheel ptmp
-    sudo chmod 777 ptmp
-    sudo ln -s /mnt/efs/fs1/ptmp /ptmp
-  fi
+#   if [ ! -d ptmp ] ; then
+#     sudo mkdir ptmp
+#     sudo chgrp wheel ptmp
+#     sudo chmod 777 ptmp
+#     sudo ln -s /mnt/efs/fs1/ptmp /ptmp
+#   fi
 
-  if [ ! -d com ] ; then
-    sudo mkdir com
-    sudo chgrp wheel com
-    sudo chmod 777 com
-    sudo ln -s /mnt/efs/fs1/com  /com
-  fi
+#   if [ ! -d com ] ; then
+#     sudo mkdir com
+#     sudo chgrp wheel com
+#     sudo chmod 777 com
+#     sudo ln -s /mnt/efs/fs1/com  /com
+#   fi
 
-# Not sure why it keeps creating an extra sym link
-#  if [ ! -d save ] ; then
-#    sudo mkdir save
-#    sudo chgrp wheel save
-#    sudo chmod 777 save
-#    sudo ln -s /mnt/efs/fs1/save /save
-#  fi
+# # Not sure why it keeps creating an extra sym link
+# #  if [ ! -d save ] ; then
+# #    sudo mkdir save
+# #    sudo chgrp wheel save
+# #    sudo chmod 777 save
+# #    sudo ln -s /mnt/efs/fs1/save /save
+# #  fi
 
-  # mkdir /save/$USER
-  mkdir /com/$USER
-  mkdir /ptmp/$USER
+#   # mkdir /save/$USER
+#   mkdir /com/$USER
+#   mkdir /ptmp/$USER
 
-  set +x
+#   set +x
   cd $home
 }
 
@@ -158,63 +166,64 @@ setup_environment_osx () {
 install_efa_driver() {
 
   echo "Running ${FUNCNAME[0]} ..."
-  echo "!!!!!!!!!               INSTALLING EFA DRIVER                !!!!!!!!!"
-  echo "!!!!!!!!!     DO NOT KILL OR PRESS CTL-C UNTIL COMPLETED     !!!!!!!!!"
+# Commented out as this is installed in step02_efa_playbook.yml in the base images
+  # echo "!!!!!!!!!               INSTALLING EFA DRIVER                !!!!!!!!!"
+  # echo "!!!!!!!!!     DO NOT KILL OR PRESS CTL-C UNTIL COMPLETED     !!!!!!!!!"
 
-# This must be installed before the rest
+# # This must be installed before the rest
 
-# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa-start.html
+# # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa-start.html
 
-  home=$PWD
+#   home=$PWD
 
-  version=$EFA_INSTALLER_VER
+#   version=$EFA_INSTALLER_VER
 
-  # version=latest
-  # version=1.14.1  # Last one with CentOS 8 support
-  tarfile=aws-efa-installer-${version}.tar.gz
+#   # version=latest
+#   # version=1.14.1  # Last one with CentOS 8 support
+#   tarfile=aws-efa-installer-${version}.tar.gz
 
-  wrkdir=~/efadriver
-  [ -e "$wrkdir" ] && rm -Rf "$wrkdir"
-  mkdir -p "$wrkdir"
-  cd "$wrkdir"
+#   wrkdir=~/efadriver
+#   [ -e "$wrkdir" ] && rm -Rf "$wrkdir"
+#   mkdir -p "$wrkdir"
+#   cd "$wrkdir"
 
-  # There may be old kernels laying around without available headers, temporarily move them
-  # otherwise the efa driver might fail
+#   # There may be old kernels laying around without available headers, temporarily move them
+#   # otherwise the efa driver might fail
 
-  sudo mkdir /usr/lib/oldkernel
-  while [ `ls -1 /usr/lib/modules | wc -l` -gt 1 ]
-  do
-    oldkrnl=`ls -1 /usr/lib/modules | head -1`
-    sudo mv /usr/lib/modules/$oldkrnl /usr/lib/oldkernel
-  done
+#   sudo mkdir /usr/lib/oldkernel
+#   while [ `ls -1 /usr/lib/modules | wc -l` -gt 1 ]
+#   do
+#     oldkrnl=`ls -1 /usr/lib/modules | head -1`
+#     sudo mv /usr/lib/modules/$oldkrnl /usr/lib/oldkernel
+#   done
 
-  # System default gcc version is needed to build the kernel driver
-  curl -s -O https://s3-us-west-2.amazonaws.com/aws-efa-installer/$tarfile
-  tar -xf $tarfile
-  rm $tarfile
+#   # System default gcc version is needed to build the kernel driver
+#   curl -s -O https://s3-us-west-2.amazonaws.com/aws-efa-installer/$tarfile
+#   tar -xf $tarfile
+#   rm $tarfile
 
-  cd aws-efa-installer
+#   cd aws-efa-installer
 
-  # hpc7a did not work with intel MPI and the AWS libfabric
-  EFA_MINAMAL="YES"
+#   # hpc7a did not work with intel MPI and the AWS libfabric
+#   EFA_MINAMAL="YES"
 
-  if [[ $EFA_MINIMAL == "NO" ]]; then
-    # Install with AWS libfabric and OpenMPI, need to fix PATH prefix the forces OpenMPI mpirun and mpifort.
-    sudo ./efa_installer.sh -y
+#   if [[ $EFA_MINIMAL == "NO" ]]; then
+#     # Install with AWS libfabric and OpenMPI, need to fix PATH prefix the forces OpenMPI mpirun and mpifort.
+#     sudo ./efa_installer.sh -y
 
-    # If it installed openmpi, undo the profile.d change the installer made
-    sudo cp $home/system/profile.d.zippy_efa.sh /etc/profile.d/zippy_efa.sh
+#     # If it installed openmpi, undo the profile.d change the installer made
+#     sudo cp $home/system/profile.d.zippy_efa.sh /etc/profile.d/zippy_efa.sh
 
-  else
-    # Install without AWS libfabric and OpenMPI, we will use Intel libfabric and MPI
-    sudo ./efa_installer.sh -y --minimal
-  fi
+#   else
+#     # Install without AWS libfabric and OpenMPI, we will use Intel libfabric and MPI
+#     sudo ./efa_installer.sh -y --minimal
+#   fi
 
-  # Put old kernels back in original location in case new kernel fails to boot, can revert if needed
-  if [ $(ls /usr/lib/oldkernel/ | wc -l) -ne 0 ]; then
-    sudo mv /usr/lib/oldkernel/*  /usr/lib/modules
-    sudo rmdir /usr/lib/oldkernel
-  fi
+#   # Put old kernels back in original location in case new kernel fails to boot, can revert if needed
+#   if [ $(ls /usr/lib/oldkernel/ | wc -l) -ne 0 ]; then
+#     sudo mv /usr/lib/oldkernel/*  /usr/lib/modules
+#     sudo rmdir /usr/lib/oldkernel
+#   fi
 
   cd $home
   echo "!!!!!!!!!    EFA INSTALLER COMPLETED    !!!!!!!!!"
@@ -228,9 +237,9 @@ install_gcc_toolset_yum() {
 
   home=$PWD
 
-  sudo yum -y install gcc-toolset-11-gcc-c++
-  sudo yum -y install gcc-toolset-11-gcc-gfortran
-  sudo yum -y install gcc-toolset-11-gdb
+  # sudo yum -y install gcc-toolset-11-gcc-c++
+  # sudo yum -y install gcc-toolset-11-gcc-gfortran
+  # sudo yum -y install gcc-toolset-11-gdb
  
   # scl enable gcc-toolset-11 bash - Not inside a script
   # source scl_source enable gcc-toolset-11
@@ -456,16 +465,17 @@ install_intel_oneapi_spack () {
 
   home=$PWD
 
-  . $SPACK_DIR/share/spack/setup-env.sh 
+  # Added in step02_setup_instance_playbook.yml
+  # . $SPACK_DIR/share/spack/setup-env.sh 
 
-  source /opt/rh/gcc-toolset-11/enable
+  # source /opt/rh/gcc-toolset-11/enable
 
-  GCC_COMPILER=`spack compilers | grep "gcc@11\."`
+  # GCC_COMPILER=`spack compilers | grep "gcc@11\."`
 
-  spack install $SPACKOPTS intel-oneapi-compilers@${ONEAPI_VER} $SPACKTARGET
+  # spack install $SPACKOPTS intel-oneapi-compilers@${ONEAPI_VER} $SPACKTARGET
 
-  spack compiler add `spack location -i intel-oneapi-compilers \%${GCC_COMPILER}`/compiler/latest/linux/bin/intel64
-  spack compiler add `spack location -i intel-oneapi-compilers \%${GCC_COMPILER}`/compiler/latest/linux/bin
+  # spack compiler add `spack location -i intel-oneapi-compilers \%${GCC_COMPILER}`/compiler/latest/linux/bin/intel64
+  # spack compiler add `spack location -i intel-oneapi-compilers \%${GCC_COMPILER}`/compiler/latest/linux/bin
 
   # MKL is not installing, a lot of build issues! frustrating!
   # sudo yum -y install libxml2
@@ -970,6 +980,7 @@ install_esmf_spack () {
 }
 
 #-----------------------------------------------------------------------------#
+# Not actually used.  There's a commented out line in install_petsc.sh
 install_petsc_intelmpi-spack () {
 
   . $SPACK_DIR/share/spack/setup-env.sh
